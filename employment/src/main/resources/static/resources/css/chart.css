@@ -1,0 +1,68 @@
+/* 设置body的背景色和字体 */
+body {
+    background-color: #f3f3f3;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* 设置标题的字体和颜色 */
+h1 {
+    font-family: 'Merriweather', serif;
+    color: #008080;
+}
+
+/* 设置包含所有内容的div的样式 */
+#main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 设置链接的颜色 */
+a {
+    color: #008080;
+}
+
+/* 设置按钮的样式 */
+button {
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 鼠标悬停按钮时的样式 */
+button:hover {
+    background-color: #006666;
+}
+
+/* 设置图片的边框样式 */
+img {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* 设置表格样式 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #008080;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

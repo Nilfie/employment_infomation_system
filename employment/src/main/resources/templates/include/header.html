@@ -1,0 +1,20 @@
+<div th:fragment="header" class="layui-header">
+    <div class="layui-logo">就业管理</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item employment-info-item"><a href="/employment/employmentinfo">就业信息</a></li>
+        <li class="layui-nav-item employment-statistic-item"><a href="/employment/statistic">就业统计</a></li>
+        if (0 != result.data.userType) {
+        $('.user-manage-item').remove();
+        }
+        <li class="layui-nav-item user-manage-item" th:if="${session.user.userType}!=1"><a href="/employment/usermanage">用户管理</a></li>
+        <li class="layui-nav-item employment-info-item"><a href="/employment/studentchart">企业词云图</a></li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a class="user-name" href="javascript:;" th:text="${session.user.userAccount}">null
+            </a>
+        </li>
+        <li class="layui-nav-item"><a class="logout-btn">退出</a></li>
+    </ul>
+</div>

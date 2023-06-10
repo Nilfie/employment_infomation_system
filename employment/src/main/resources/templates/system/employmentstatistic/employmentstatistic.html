@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:include="include/commoncss::commoncss(~{})">
+    <!--    &lt;!&ndash; 引入在线资源 选择你需要的 g2 版本以替换 version 变量 &ndash;&gt;-->
+    <script src="https://gw.alipayobjects.com/os/lib/antv/g2/3.4.10/dist/g2.min.js"></script>
+    <!--    &lt;!&ndash; 引入在线资源 &ndash;&gt;-->
+    <script src="https://unpkg.com/@antv/data-set"></script>
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+    <title></title>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="include/header::header"></div>
+    <div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">按专业统计</li>
+            <li>按班级统计</li>
+            <li>按岗位统计</li>
+            <li>按企业统计</li>
+        </ul>
+
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <table class="layui-hide" id="majorStaList" lay-filter="majorStaList"></table>
+                <div class="layui-chart1" id="majorChart" lay-filter="majorChart"></div>
+            </div>
+            <div class="layui-tab-item">
+                <table class="layui-hide" id="classStaList" lay-filter="classStaList"></table>
+                <div class="layui-chart" id="classChart" lay-filter="classChart"></div>
+            </div>
+            <div class="layui-tab-item">
+                <table class="layui-hide" id="stationStaList" lay-filter="stationStaList"></table>
+                <div class="layui-chart" id="stationChart" lay-filter="stationChart"></div>
+            </div>
+            <div class="layui-tab-item">
+                <table class="layui-hide" id="companyStaList" lay-filter="companyStaList"></table>
+                <div class="layui-chart" id="companyChart" lay-filter="companyChart"></div>
+            </div>
+
+        </div>
+    </div>
+<!--    <script type="text/html" id="statisticListOpt">-->
+<!--        <a class="layui-btn layui-btn-xs" lay-event="">查看详情</a>-->
+<!--    </script>-->
+
+    <div th:include="include/commonjs::commonjs(~{::script})">
+        <script type="text/javascript" src="/resources/js/common/header.js"></script>
+        <script type="text/javascript" src="/resources/js/system/employmentstatistic/employmentstatistic.js"></script>
+    </div>
+</div>
+
+<!--<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>-->
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script th:inline="javascript">
+
+
+    /**
+     * majorChart
+     */
+    const groupByMajor = [[${groupByMajor}]]
+    //饼图
+    const arr1 = [];
+    const arrRose = [];
+    const totals = [[${totals}]];
+    for (let i = 0; i < groupByMajor.length; i++) {
+        const num = groupByMajor[i].num;
+        const total = Number(totals[0].totals);
+        const percent_ = parseFloat((num / total).toFixed(2));
+
+        arr1.push(
+            {item: groupByMajor[i].student_major, count: groupByMajor[i].num, percent: percent_}
+        )
+
+        const student_major = groupByMajor[i].student_major;
+        arrRose.push(
+            {type: student_major, value: groupByMajor[i].num}
+        )
+    }
+
+    /**
+     * Rose图
+     * @param p0
+     * @param p1
+     * @param ratio
+     * @returns {{x: number, y: number}}
+     */
+
+    // 根据比例，获取两点之间的点
+    function getPoint(p0, p1, ratio) {
+        return {
+            x: (1 - ratio) * p0.x + ratio * p1.x,
+            y: (1 - ratio) * p0.y + ratio * p1.y
+        };
+    }
+
+    const pointRatio = 0.7; // 设置开始变成圆弧的位置 0.7
+    // 可以通过调整这个数值控制分割空白处的间距，0-1 之间的数值
+    const sliceNumber = 0.005;
+
+    // 自定义 other 的图形，增加两条线
+    G2.Shape.registerShape('interval', 'platelet', {
+        draw: function draw(cfg, container) {
+            cfg.points[1].y = cfg.points[1].y - sliceNumber;
+            cfg.points[2].y = cfg.points[2].y - sliceNumber;
+            let centerPoint = {
+                x: cfg.points[3].x,
+                y: (cfg.points[2].y + cfg.points[3].y) / 2
+            };
+            centerPoint = this.parsePoint(centerPoint);
+            const points = this.parsePoints(cfg.points);
+            const path = [];
+            const tmpPoint1 = getPoint(points[0], points[3], pointRatio);
+            const tmpPoint2 = getPoint(points[1], points[2], pointRatio);
+            path.push(['M', points[0].x, points[0].y]);
+            path.push(['L', tmpPoint1.x, tmpPoint1.y]);
+            path.push(['Q', points[3].x, points[3].y, centerPoint.x, centerPoint.y]);
+            path.push(['Q', points[2].x, points[2].y, tmpPoint2.x, tmpPoint2.y]);
+            path.push(['L', points[1].x, points[1].y]);
+            path.push(['z']);
+            return container.addShape('path', {
+                attrs: {
+                    fill: cfg.color,
+                    path: path
+                }
+            });
+        }
+    });
+    const chart = new G2.Chart({
+        container: 'majorChart',
+        forceFit: true,
+        // height: window.innerHeight,
+        // // height: 600,
+        padding: [70, 0]
+    });
+
+    chart.source(arrRose);
+    chart.coord('theta');
+    chart.intervalStack().position('value').color('type').shape('platelet').label('type');
+
+    chart.render();
+
+    /**
+     * classChart
+     */
+    const groupByClass = [[${groupByClass}]]
+    //饼图
+    const arr2 = [];
+    const arrNdge = [];
+    for (let i = 0; i < groupByClass.length; i++) {
+        const num = groupByClass[i].num;
+        const total = Number(totals[0].totals);
+        const percent_ = parseFloat((num / total).toFixed(2));
+
+        arr2.push(
+            {item: groupByClass[i].student_class, count: groupByClass[i].num, percent: percent_}
+        )
+
+        const student_class = groupByClass[i].student_class;
+        arrNdge.push(
+            {className: student_class, classNum: groupByClass[i].num}
+        )
+    }
+
+    const chartHT = new G2.Chart({
+        container: 'classChart',
+        forceFit: true,
+        // height: window.innerHeight,
+        animate: false
+    });
+    chartHT.source(arr2, {
+        percent: {
+            formatter: function formatter(val) {
+                val = val * 100 + '%';
+                return val;
+            }
+        }
+    });
+    chartHT.coord('theta', {
+        radius: 0.75,
+        innerRadius: 0.6
+    });
+    chartHT.tooltip({
+        showTitle: false,
+        itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+    });
+    // 辅助文本
+    chartHT.guide().html({
+        position: ['50%', '50%'],
+        html: '<div style="color:#8c8c8c;font-size: 14px;text-align: center;width: 10em;">班级<br><span style="color:#8c8c8c;font-size:20px"></span>统计</div>',
+        alignX: 'middle',
+        alignY: 'middle'
+    });
+    const interval = chartHT.intervalStack().position('percent').color('item').label('percent', {
+        formatter: function formatter(val, item) {
+            return item.point.item + ': ' + val;
+        }
+    }).tooltip('item*percent', function (item, percent) {
+        percent = percent * 100 + '%';
+        return {
+            name: item,
+            value: percent
+        };
+    }).style({
+        lineWidth: 1,
+        stroke: '#fff'
+    });
+    chartHT.render();
+    interval.setSelected(arr2[0]);
+
+    /**
+     * stationChart
+     */
+    const groupByStation = [[${groupByStation}]]
+    //饼图
+    const arr3 = [];
+    const arrStation = [];
+    for (let i = 0; i < groupByStation.length; i++) {
+        const num = groupByStation[i].num;
+        const total = Number(totals[0].totals);
+        const percent_ = parseFloat((num / total).toFixed(2));
+
+        arr3.push(
+            {item: groupByStation[i].employment_station, count: groupByStation[i].num, percent: percent_}
+        )
+
+        const employment_station = groupByStation[i].employment_station;
+        arrStation.push(
+            {type: employment_station, value: groupByStation[i].num}
+        )
+    }
+
+    // 根据比例，获取两点之间的点
+    function getPoint1(p0, p1, ratio) {
+        return {
+            x: (1 - ratio) * p0.x + ratio * p1.x,
+            y: (1 - ratio) * p0.y + ratio * p1.y
+        };
+    }
+
+    const pointRatio1 = 0.7; // 设置开始变成三角形的位置 0.7
+
+
+    // 自定义 other 的图形，增加两条线
+    G2.Shape.registerShape('interval', 'triangleShape', {
+        draw: function draw(cfg, container) {
+            let centerPoint = {
+                x: cfg.points[3].x,
+                y: (cfg.points[2].y + cfg.points[3].y) / 2
+            };
+            centerPoint = this.parsePoint(centerPoint);
+
+            const points = this.parsePoints(cfg.points);
+            const tmpPoint1 = getPoint1(points[0], points[3], pointRatio1);
+            const tmpPoint2 = getPoint1(points[1], points[2], pointRatio1);
+            const path = [];
+            path.push(['M', points[0].x, points[0].y]);
+            path.push(['L', points[1].x, points[1].y]);
+            path.push(['L', tmpPoint2.x, tmpPoint2.y]);
+            path.push(['L', centerPoint.x, centerPoint.y]);
+            path.push(['L', tmpPoint1.x, tmpPoint1.y]);
+            path.push('Z');
+            return container.addShape('path', {
+                attrs: {
+                    fill: cfg.color,
+                    path: path,
+                    lineWidth: 1,
+                    stroke: 'white'
+                }
+            });
+        }
+    });
+
+    const stationChart = new G2.Chart({
+        container: 'stationChart',
+        forceFit: true,
+        // height: window.innerHeight
+    });
+
+    stationChart.source(arrStation);
+    stationChart.coord('theta', {
+        radius: 0.8
+    });
+    stationChart.intervalStack().position('value').color('type').shape('triangleShape').label('type');
+
+    stationChart.render();
+
+
+    /**
+     * companyChart
+     */
+    const groupByCompany = [[${groupByCompany}]]
+    //饼图
+    const arr4 = [];
+    for (let i = 0; i < groupByCompany.length; i++) {
+        const num = groupByCompany[i].num;
+        const total = Number(totals[0].totals);
+        const percent_ = parseFloat((num / total).toFixed(2));
+
+        arr4.push(
+            {item: groupByCompany[i].company_name, count: groupByCompany[i].num, percent: percent_}
+        )
+    }
+    const companyChart = new G2.Chart({
+        container: 'companyChart',
+        forceFit: true,
+        height: 500
+    });
+    companyChart.source(arr4, {
+        percent: {
+            formatter: val => {
+                val = (val * 100) + '%';
+                return val;
+            }
+        }
+    });
+    companyChart.coord('theta');
+    companyChart.tooltip({
+        showTitle: false
+    });
+    companyChart.intervalStack()
+        .position('percent')
+        .color('item')
+        .label('percent', {
+            offset: -40,
+            // autoRotate: false,
+            textStyle: {
+                textAlign: 'center',
+                shadowBlur: 2,
+                shadowColor: 'rgba(0, 0, 0, .45)',
+                fill: '#fff'
+            }
+        })
+        .tooltip('item*percent', (item, percent) => {
+            percent = percent * 100 + '%';
+            return {
+                name: item,
+                value: percent
+            };
+        })
+        .style({
+            lineWidth: 1,
+            stroke: '#fff'
+        });
+    companyChart.render();
+</script>
+<div th:include="include/commonjs::commonjs(~{::script})">
+    <script type="text/javascript" src="/resources/js/common/header.js"></script>
+</div>
+</body>
+</html>

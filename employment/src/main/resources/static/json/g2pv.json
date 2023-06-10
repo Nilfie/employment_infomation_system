@@ -1,0 +1,218 @@
+[
+  {
+    "site": "www.qq.com",
+    "pv": 30,
+    "type": 20,
+    "name": "腾讯"
+  },
+  {
+    "site": "www.baidu.com",
+    "pv": 30,
+    "type": 20,
+    "name": "百度"
+  },
+  {
+    "site": "www.sogou.com",
+    "pv": 30,
+    "type": 2,
+    "name": "搜狗"
+  },
+  {
+    "site": "www.sinopecgroup.com",
+    "name": "中国石油化工集团",
+    "pv": 24,
+    "type": 11
+  },
+  {
+    "site": "http://www.cnpc.com.cn",
+    "name": "中国石油天然气集团",
+    "pv": 12,
+    "type": 17
+  },
+  {
+    "site": "www.chinamobile.com",
+    "name": "中国移动通信集团",
+    "pv": 9,
+    "type": 4
+  },
+  {
+    "site": "www.chinaunicom.com",
+    "name": "中国联通",
+    "pv": 21,
+    "type": 7
+  },
+  {
+    "site": "www.chinatelecom.com.cn",
+    "name": "中国电信集团",
+    "pv": 6,
+    "type": 13
+  },
+  {
+    "site": "www.pingan.com",
+    "name": "中国平安保险（集团）股份",
+    "pv": 19,
+    "type": 19
+  },
+  {
+    "site": "www.alibaba.com",
+    "name": "阿里巴巴集团控股",
+    "pv": 29,
+    "type": 22
+  },
+  {
+    "site": "www.tencent.com",
+    "name": "腾讯控股",
+    "pv": 18,
+    "type": 3
+  },
+  {
+    "site": "www.huawei.com",
+    "name": "华为技术",
+    "pv": 10,
+    "type": 29
+  },
+  {
+    "site": "www.chinaconstruction.com",
+    "name": "中国建筑股份",
+    "pv": 25,
+    "type": 14
+  },
+  {
+    "site": "www.sinosteel.com/",
+    "name": "中国中钢集团",
+    "pv": 26,
+    "type": 8
+  },
+  {
+    "site": "www.haier.com/cn/",
+    "name": "青岛海尔股份",
+    "pv": 28,
+    "type": 25
+  },
+  {
+    "site": "www.fosun.com",
+    "name": "复星集团",
+    "pv": 7,
+    "type": 21
+  },
+  {
+    "site": "www.sinosteel.com/",
+    "name": "中国中钢集团",
+    "pv": 26,
+    "type": 8
+  },
+  {
+    "site": "www.haier.com/cn/",
+    "name": "青岛海尔股份",
+    "pv": 28,
+    "type": 25
+  },
+  {
+    "site": "www.fosun.com",
+    "name": "复星集团",
+    "pv": 7,
+    "type": 21
+  },
+  {
+    "site": "www.chinatimes.com.cn/",
+    "name": "中国时报集团",
+    "pv": 30,
+    "type": 1
+  },
+  {
+    "site": "http://www.sinotrans.com/",
+    "name": "中国外运股份",
+    "pv": 14,
+    "type": 12
+  },
+  {
+    "site": "www.zte.com.cn/cn/",
+    "name": "中兴通讯股份",
+    "pv": 23,
+    "type": 9
+  },
+  {
+    "site": "www.coal.com.cn/",
+    "name": "中国煤炭科工集团",
+    "pv": 11,
+    "type": 20
+  },
+  {
+    "site": "http://www.cnhtc.com.cn/",
+    "name": "中国重汽集团",
+    "pv": 22,
+    "type": 16
+  },
+  {
+    "site": "www.lenovo.com/cn/zh/",
+    "name": "联想集团",
+    "pv": 17,
+    "type": 28
+  },
+  {
+    "site": "www.cctv.com/",
+    "name": "中国中央电视台",
+    "pv": 2,
+    "type": 27
+  },
+  {
+    "site": "www.cscec.com/",
+    "name": "中建筑股份",
+    "pv": 4,
+    "type": 18
+  },
+  {
+    "site": "www.changhong.com/",
+    "name": "长虹集团股份",
+    "pv": 13,
+    "type": 24
+  },
+  {
+    "site": "www.chinacnr.com/",
+    "name": "中国中车股份",
+    "pv": 1,
+    "type": 15
+  },
+  {
+    "site": "www.cepi.com.cn/",
+    "name": "中国电力投资集团公司",
+    "pv": 5,
+    "type": 30
+  },
+  {
+    "site": "www.cssc.net.cn/",
+    "name": "中国船舶重工集团",
+    "pv": 3,
+    "type": 5
+  },
+  {
+    "site": "www.china-airlines.com/cn/zh",
+    "name": "中国国际航空股份",
+    "pv": 12,
+    "type": 13
+  },
+  {
+    "site": "www.chinapost.com.cn/",
+    "name": "中国邮政集团公司",
+    "pv": 25,
+    "type": 7
+  },
+  {
+    "site": "www.crrcgc.cc/",
+    "name": "中国中车集团",
+    "pv": 16,
+    "type": 19
+  },
+  {
+    "site": "www.petrochina.com.cn/",
+    "name": "中国石油股份",
+    "pv": 30,
+    "type": 2
+  },
+  {
+    "site": "www.cgnpc.com.cn/",
+    "name": "中国广核集团",
+    "pv": 8,
+    "type": 6
+  }
+]
